@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_yome/r.dart';
 
 class NavigationIconView {
   NavigationIconView({
@@ -17,7 +16,7 @@ class NavigationIconView {
           title: new Text(
             title,
             // style: TextStyle(
-            //   color: Color(0XFFA833FA),
+            //   color: Color(0Xffffffff),
             // ),
           ),
           backgroundColor: color,

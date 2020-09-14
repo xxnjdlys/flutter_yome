@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_yome/r.dart';
+import 'package:flutter_yome/generated/l10n.dart';
 import 'package:flutter_yome/widget/bottom_navigation_item_view.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,6 +30,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('zh', 'CN'),
+        ...S.delegate.supportedLocales
+      ],
       theme: ThemeData(
         primarySwatch: themeColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -38,18 +50,12 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  // MyHomePage({Key key, this.title}) : super(key: key);
-  // final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   String title = "";
-
-  // _MyHomePageState({this.title}) : super();
-
   int _currentIndex = 0;
   final BottomNavigationBarType _type = BottomNavigationBarType.fixed;
   List<NavigationIconView> _navigationViews;
@@ -57,7 +63,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+  }
 
+  void _rebuild() {
+    setState(() {
+      // Rebuild in order to animate views.
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     _navigationViews = <NavigationIconView>[
       new NavigationIconView(
         icon: Image.asset(
@@ -70,7 +85,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           width: 24.0,
           height: 24.0,
         ),
-        title: '发现',
+        // title: '发现',
+        title: S.of(context).txt_tab_home,
         vsync: this,
       ),
       new NavigationIconView(
@@ -84,7 +100,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           width: 24.0,
           height: 24.0,
         ),
-        title: '消息',
+        // title: '消息',
+        title: S.of(context).txt_tab_chat,
         vsync: this,
       ),
       new NavigationIconView(
@@ -98,7 +115,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           width: 24.0,
           height: 24.0,
         ),
-        title: '我的',
+        // title: '我的',
+        title: S.of(context).txt_tab_my,
         vsync: this,
       ),
     ];
@@ -107,21 +125,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       view.controller.addListener(_rebuild);
 
     _navigationViews[_currentIndex].controller.value = 1.0;
-  }
 
-  void _rebuild() {
-    setState(() {
-      // Rebuild in order to animate views.
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final BottomNavigationBar botNavBar = new BottomNavigationBar(
+      backgroundColor: Color(0x00000000),
+      elevation: 0.0,
       items: _navigationViews
           .map((NavigationIconView navigationView) => navigationView.item)
           .toList(),
       currentIndex: _currentIndex,
+      // 文字选中原色
       fixedColor: Color(0XFFA833FA),
       type: _type,
       onTap: (int index) {
@@ -135,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_getCurrentTitle(_currentIndex)),
+        title: Text("${_getCurrentTitle(_currentIndex)}"),
         centerTitle: true,
         actions: [
           Padding(
@@ -153,7 +165,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ],
       ),
       body: _getCurrentFragment(_currentIndex),
-      bottomNavigationBar: botNavBar,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   child: const Icon(Icons.mail),
+      //   onPressed: null,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(2000.0)),
+      //   ),
+      // ),
+      bottomNavigationBar: BottomAppBar(
+        // color: Color(0XFFA833FA),
+        shape: CircularNotchedRectangle(),
+        child: botNavBar,
+      ),
     );
   }
 
@@ -165,13 +189,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     String t = "";
     switch (position) {
       case TAB_HOME:
-        t = "Home";
+        // t = "YoMe";
+        t = S.of(context).txt_tab_home;
         break;
       case TAB_MESSAGE:
-        t = "Chat";
+        // t = "消息";
+        t = S.of(context).txt_tab_chat;
         break;
       case TAB_MY:
-        t = "My";
+        // t = "个人资料";
+        t = S.of(context).txt_tab_my;
         break;
     }
     return t;
@@ -183,19 +210,22 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       case TAB_HOME:
         widget = buildTabHolderFragment();
         setState(() {
-          title = "Home";
+          // title = "Home";
+          title = S.of(context).txt_tab_home;
         });
         break;
       case TAB_MESSAGE:
         widget = buildTabHolderFragment();
         setState(() {
-          title = "Chat";
+          // title = "Chat";
+          title = S.of(context).txt_tab_chat;
         });
         break;
       case TAB_MY:
         widget = buildTabHolderFragment();
         setState(() {
-          title = "My";
+          // title = "My";
+          title = S.of(context).txt_tab_my;
         });
         break;
     }
@@ -209,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
           child: Text(
-            'Hello World!',
+            'Hello World $_currentIndex !!!',
           ),
         ),
       ));
