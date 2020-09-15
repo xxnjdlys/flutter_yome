@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "autoBySystem" : MessageLookupByLibrary.simpleMessage("跟随系统"),
     "txt_tab_chat" : MessageLookupByLibrary.simpleMessage("Message"),
     "txt_tab_home" : MessageLookupByLibrary.simpleMessage("Finder"),
     "txt_tab_my" : MessageLookupByLibrary.simpleMessage("My")

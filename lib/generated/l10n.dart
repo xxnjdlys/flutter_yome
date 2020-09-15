@@ -62,6 +62,16 @@ class S {
       args: [],
     );
   }
+
+  /// `跟随系统`
+  String get autoBySystem {
+    return Intl.message(
+      '跟随系统',
+      name: 'autoBySystem',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

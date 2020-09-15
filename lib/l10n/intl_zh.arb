@@ -1,5 +1,7 @@
 {
   "txt_tab_home" : "发现",
   "txt_tab_chat" : "消息",
-  "txt_tab_my" : "我的"
+  "txt_tab_my" : "我的",
+
+  "autoBySystem": "跟随系统"
 }

@@ -1,75 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_yome/r.dart';
+import 'package:flutter_yome/ui/chat/chat_fragment.dart';
+import 'package:flutter_yome/ui/home/home_fragment.dart';
+import 'package:flutter_yome/ui/my/my_fragment.dart';
 import 'package:flutter_yome/generated/l10n.dart';
-import 'package:flutter_yome/widget/bottom_navigation_item_view.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_yome/widget/tabs.dart';
 
-void main() {
-  runApp(MyApp());
+import 'bottom_navigation_item_view.dart';
+
+class Tabs extends StatefulWidget {
+  final index;
+
+  Tabs({Key key, this.index = 0}) : super(key: key);
+
+  _TabsState createState() => _TabsState(this.index);
 }
 
-// This widget is the root of your application.
-class MyApp extends StatelessWidget {
-  static const MaterialColor themeColor = MaterialColor(
-    0XFFA833FA,
-    <int, Color>{
-      50: Color(0XFFA833FA),
-      100: Color(0XFFA833FA),
-      200: Color(0XFFA833FA),
-      300: Color(0XFFA833FA),
-      400: Color(0XFFA833FA),
-      500: Color(0XFFA833FA),
-      600: Color(0XFFA833FA),
-      700: Color(0XFFA833FA),
-      800: Color(0XFFA833FA),
-      900: Color(0XFFA833FA),
-    },
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
-      supportedLocales: [
-        const Locale('zh', 'CN'),
-        ...S.delegate.supportedLocales
-      ],
-      theme: ThemeData(
-        primarySwatch: themeColor,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Tabs(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   String title = "";
   int _currentIndex = 0;
   final BottomNavigationBarType _type = BottomNavigationBarType.fixed;
   List<NavigationIconView> _navigationViews;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void _rebuild() {
-    setState(() {
-      // Rebuild in order to animate views.
-    });
+  _TabsState(index) {
+    this._currentIndex = index;
   }
 
   @override
@@ -122,8 +75,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ),
     ];
 
-    for (NavigationIconView view in _navigationViews)
+    for (NavigationIconView view in _navigationViews) {
       view.controller.addListener(_rebuild);
+    }
 
     _navigationViews[_currentIndex].controller.value = 1.0;
 
@@ -166,7 +120,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ],
       ),
       body: _getCurrentFragment(_currentIndex),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+
+      // floatingActionButtonLocation:
+      //     FloatingActionButtonLocation.miniCenterDocked,
       // floatingActionButton: FloatingActionButton(
       //   child: const Icon(Icons.mail),
       //   onPressed: null,
@@ -174,6 +130,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       //     borderRadius: BorderRadius.all(Radius.circular(2000.0)),
       //   ),
       // ),
+
       bottomNavigationBar: BottomAppBar(
         // color: Color(0XFFA833FA),
         shape: CircularNotchedRectangle(),
@@ -209,21 +166,21 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     Widget widget;
     switch (position) {
       case TAB_HOME:
-        widget = buildTabHolderFragment();
+        widget = HomeFragment();
         setState(() {
           // title = "Home";
           title = S.of(context).txt_tab_home;
         });
         break;
       case TAB_MESSAGE:
-        widget = buildTabHolderFragment();
+        widget = ChatFragment();
         setState(() {
           // title = "Chat";
           title = S.of(context).txt_tab_chat;
         });
         break;
       case TAB_MY:
-        widget = buildTabHolderFragment();
+        widget = MyFragment();
         setState(() {
           // title = "My";
           title = S.of(context).txt_tab_my;
@@ -233,15 +190,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return widget;
   }
 
-  Widget buildTabHolderFragment() => MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: new Scaffold(
-        body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Text(
-            'Hello World $_currentIndex !!!',
-          ),
-        ),
-      ));
+  // Widget buildTabHolderFragment() => MaterialApp(
+  //     debugShowCheckedModeBanner: false,
+  //     home: new Scaffold(
+  //       body: Center(
+  //         // Center is a layout widget. It takes a single child and positions it
+  //         // in the middle of the parent.
+  //         child: Text(
+  //           'Hello World $_currentIndex !!!',
+  //         ),
+  //       ),
+  //     ));
+  //
+  void _rebuild() {}
 }
